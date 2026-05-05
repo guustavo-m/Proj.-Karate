@@ -1,0 +1,114 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* topo */
+.top {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.varBox {
+  border: 2px solid white;
+  padding: 5px 20px;
+  font-weight: bold;
+}
+
+/* placar */
+.scoreboard {
+  flex: 1;
+  display: flex;
+}
+
+.side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.red {
+  background: #c62828;
+}
+
+.blue {
+  background: #1565c0;
+}
+
+/* nome */
+.name {
+  font-size: 52px;
+  margin-bottom: 10px;
+}
+
+/* pontuação */
+.score {
+  font-size: 120px;
+  font-weight: bold;
+}
+
+/* warning */
+.warning {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* faltas */
+.fouls {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.foul {
+  width: 30px;
+  height: 30px;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.foulActive {
+  width: 30px;
+  height: 30px;
+  background: yellow;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* centro */
+.center {
+  width: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer {
+  font-size: 80px;
+  font-weight: bold;
+}
+
+.ending {
+  color: red;
+}
+
+/* rodapé */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: #111;
+}

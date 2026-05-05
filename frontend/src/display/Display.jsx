@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
+import styles from "./Display.module.css";
 
 export default function Display() {
   const [state, setState] = useState(null);
 
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
+  const prevTimer = useRef(null);
 
   async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
     const recorder = new MediaRecorder(stream);
-
     mediaRecorderRef.current = recorder;
     chunksRef.current = [];
 
@@ -40,11 +41,34 @@ export default function Display() {
     }
   }
 
+  function playBeep() {
+    const audio = new Audio(
+      "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+    );
+    audio.play();
+  }
+
+  function formatTime(time) {
+    const min = Math.floor(time / 60);
+    const sec = time % 60;
+    return `${min}:${sec.toString().padStart(2, "0")}`;
+  }
+
   useEffect(() => {
     socket.on("state", (data) => {
-      setState(data);
 
-      // controle da gravação
+      // som ao zerar
+      if (
+        data.isCountdown &&
+        data.timer === 0 &&
+        prevTimer.current !== 0
+      ) {
+        playBeep();
+      }
+
+      prevTimer.current = data.timer;
+
+      // gravação
       if (data.recording && !mediaRecorderRef.current) {
         startRecording();
       }
@@ -53,36 +77,73 @@ export default function Display() {
         stopRecording();
         mediaRecorderRef.current = null;
       }
+
+      setState(data);
     });
   }, []);
 
   if (!state) return <h1>Carregando...</h1>;
 
-  return (
-    <div style={{ textAlign: "center", marginTop: 50 }}>
-      <h1>
-        🔴 {state.redScore} x {state.blueScore} 🔵
-      </h1>
+  const isEnding = state.isCountdown && state.timer <= 10;
 
-      <h2>Tempo: {state.timer}s</h2>
-
-      <div>
-        <h3>Faltas Vermelho</h3>
-        {state.redFouls.map((f, i) => (
-          <span key={i}>{f ? "🟨" : "⬜"}</span>
-        ))}
-      </div>
-
-      <div>
-        <h3>Faltas Azul</h3>
-        {state.blueFouls.map((f, i) => (
-          <span key={i}>{f ? "🟨" : "⬜"}</span>
-        ))}
-      </div>
-
-      <h3>
-        {state.recording ? "🎥 Gravando..." : "⏹️ Parado"}
-      </h3>
+ return (
+  <div className={styles.container}>
+    
+    {/* TOPO */}
+    <div className={styles.top}>
+      <div className={styles.varBox}>VAR</div>
     </div>
-  );
+
+    {/* PLACAR */}
+    <div className={styles.scoreboard}>
+      
+      {/* VERMELHO */}
+      <div className={`${styles.side} ${styles.red}`}>
+        <div className={styles.name}>{state.redName}</div>
+
+        <div className={styles.score}>{state.redScore}</div>
+
+        <div className={styles.warning}>WARNING</div>
+
+        <div className={styles.fouls}>
+          {state.redFouls.map((f, i) => (
+            <div key={i} className={f ? styles.foulActive : styles.foul}>
+              {f ? i + 1 : ""}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CENTRO */}
+      <div className={styles.center}>
+        <div className={`${styles.timer} ${isEnding ? styles.ending : ""}`}>
+          {formatTime(state.timer)}
+        </div>
+      </div>
+
+      {/* AZUL */}
+      <div className={`${styles.side} ${styles.blue}`}>
+        <div className={styles.name}>{state.blueName}</div>
+
+        <div className={styles.score}>{state.blueScore}</div>
+
+        <div className={styles.warning}>WARNING</div>
+
+        <div className={styles.fouls}>
+          {state.blueFouls.map((f, i) => (
+            <div key={i} className={f ? styles.foulActive : styles.foul}>
+              {f ? i + 1 : ""}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* RODAPÉ */}
+    <div className={styles.footer}>
+      <span>Categoria: -84kg</span>
+      <span>Dojo Tomodati</span>
+    </div>
+  </div>
+);
 }

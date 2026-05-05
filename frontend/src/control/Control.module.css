@@ -1,0 +1,103 @@
+.container {
+  padding: 16px;
+  background: #111;
+  color: white;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* cada bloco */
+.section {
+  margin-bottom: 24px;
+}
+
+/* layout responsivo */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* botão base */
+.button {
+  width: 100%;
+  padding: 18px;
+  font-size: clamp(14px, 2.5vw, 20px);
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+/* feedback de clique */
+.button:active {
+  transform: scale(0.95);
+}
+
+/* cores */
+.red {
+  background: #c62828;
+  color: white;
+}
+
+.blue {
+  background: #1565c0;
+  color: white;
+}
+
+.yellow {
+  background: #fbc02d;
+  color: black;
+}
+
+.gray {
+  background: #444;
+  color: white;
+}
+
+.green {
+  background: #2e7d32;
+  color: white;
+}
+
+/* inputs */
+.input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* 📱 telas pequenas (celular) */
+@media (max-width: 480px) {
+  .button {
+    padding: 20px;
+    font-size: 18px;
+  }
+}
+
+/* 💻 telas maiores (tablet/desktop) */
+@media (min-width: 768px) {
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .button {
+    padding: 22px;
+    font-size: 20px;
+  }
+}
