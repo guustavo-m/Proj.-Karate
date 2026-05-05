@@ -1,14 +1,17 @@
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./home/Home";
 import Control from "./control/Control";
 import Display from "./display/Display";
-import './App.css'
 
 function App() {
-  const path = window.location.pathname;
-
-  if (path === "/control") return <Control />;
-  if (path === "/display") return <Display />;
-
-  return <h1>Use /control ou /display</h1>;
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/control" element={<Control />} />
+      <Route path="/display" element={<Display />} />
+    </Routes>
+  );
 }
 
 export default App;
