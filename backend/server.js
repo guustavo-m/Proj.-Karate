@@ -23,6 +23,7 @@ function createInitialState() {
 
     redName: "",
     blueName: "",
+    category: "",
 
     senshu: null,
 
@@ -113,6 +114,7 @@ function handleAction(action) {
     case "SET_NAMES":
       matchState.redName = action.red;
       matchState.blueName = action.blue;
+      matchState.category = action.category || "";
       break;
 
     // gravação

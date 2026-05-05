@@ -81,6 +81,10 @@ export default function Display() {
             )}
         </div>
       </div>
+      <div className={styles.footer}>
+        <div>Categoria: {state.category}</div>
+        <div>Dojo Tomodati</div>
+      </div>
     </div>
   );
 }

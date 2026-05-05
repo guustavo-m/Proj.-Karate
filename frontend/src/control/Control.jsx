@@ -8,42 +8,57 @@ export default function Control() {
   const [editingNames, setEditingNames] = useState(true);
   const [redName, setRedName] = useState("");
   const [blueName, setBlueName] = useState("");
+  const [category, setCategory] = useState("");
 
-  if (editingNames) {
-    return (
-      <div className={styles.container}>
-        <h2>Inserir Competidores</h2>
+if (editingNames) {
+  return (
+    <div className={styles.container}>
+      <h2>Configurar Luta</h2>
 
-        <input
-          className={styles.input}
-          placeholder="Vermelho"
-          value={redName}
-          onChange={(e) => setRedName(e.target.value)}
-        />
+      <input
+        className={styles.input}
+        placeholder="Competidor Vermelho"
+        value={redName}
+        onChange={(e) => setRedName(e.target.value)}
+      />
 
-        <input
-          className={styles.input}
-          placeholder="Azul"
-          value={blueName}
-          onChange={(e) => setBlueName(e.target.value)}
-        />
+      <input
+        className={styles.input}
+        placeholder="Competidor Azul"
+        value={blueName}
+        onChange={(e) => setBlueName(e.target.value)}
+      />
 
-        <button
-          className={`${styles.button} ${styles.green}`}
-          onClick={() => {
-            socket.emit("action", {
-              type: "SET_NAMES",
-              red: redName,
-              blue: blueName
-            });
-            setEditingNames(false);
-          }}
-        >
-          Confirmar
-        </button>
-      </div>
-    );
-  }
+      <input
+        className={styles.input}
+        placeholder="Categoria (ex: -84kg)"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      />
+
+      <button
+        className={`${styles.button} ${styles.green}`}
+        onClick={() => {
+          if (!redName || !blueName || !category) {
+            alert("Preencha todos os campos!");
+            return;
+          }
+
+          socket.emit("action", {
+            type: "SET_NAMES",
+            red: redName,
+            blue: blueName,
+            category: category
+          });
+
+          setEditingNames(false);
+        }}
+      >
+        Iniciar Luta
+      </button>
+    </div>
+  );
+}
 
   const editTime = () => {
     const value = prompt("Tempo em segundos");

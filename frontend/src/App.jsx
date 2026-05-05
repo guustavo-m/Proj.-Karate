@@ -1,5 +1,6 @@
 import Control from "./control/Control";
 import Display from "./display/Display";
+import './App.css'
 
 function App() {
   const path = window.location.pathname;
