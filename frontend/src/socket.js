@@ -1,3 +1,3 @@
 import { io } from "socket.io-client";
 
-export const socket = io("http://192.168.0.106:3001");
+export const socket = io("https://karate-placar-tomodati.onrender.com");
