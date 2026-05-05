@@ -12,24 +12,30 @@ const io = new Server(server, {
   cors: { origin: "*" }
 });
 
-// estado da luta
-let matchState = {
-  redScore: 0,
-  blueScore: 0,
+// estado inicial
+function createInitialState() {
+  return {
+    redScore: 0,
+    blueScore: 0,
 
-  redFouls: [false, false, false, false, false],
-  blueFouls: [false, false, false, false, false],
+    redFouls: [false, false, false, false, false],
+    blueFouls: [false, false, false, false, false],
 
-  redName: "",
-  blueName: "",
+    redName: "",
+    blueName: "",
 
-  timer: 120,
-  duration: 120,
-  isCountdown: true,
-  running: false,
+    senshu: null,
 
-  recording: false
-};
+    timer: 120,
+    duration: 120,
+    isCountdown: true,
+    running: false,
+
+    recording: false
+  };
+}
+
+let matchState = createInitialState();
 
 io.on("connection", (socket) => {
   socket.emit("state", matchState);
@@ -77,6 +83,17 @@ function handleAction(action) {
       removeFault(matchState.blueFouls);
       break;
 
+    // senshu
+    case "TOGGLE_SENSHU_RED":
+      matchState.senshu =
+        matchState.senshu === "red" ? null : "red";
+      break;
+
+    case "TOGGLE_SENSHU_BLUE":
+      matchState.senshu =
+        matchState.senshu === "blue" ? null : "blue";
+      break;
+
     // tempo
     case "TOGGLE_TIMER":
       matchState.running = !matchState.running;
@@ -85,6 +102,11 @@ function handleAction(action) {
     case "SET_TIME":
       matchState.timer = action.value;
       matchState.duration = action.value;
+      break;
+
+    case "RESET_TIMER":
+      matchState.timer = matchState.duration;
+      matchState.running = false;
       break;
 
     // nomes
@@ -97,10 +119,15 @@ function handleAction(action) {
     case "TOGGLE_RECORDING":
       matchState.recording = !matchState.recording;
       break;
+
+    // fim de luta
+    case "END_MATCH":
+      matchState = createInitialState();
+      break;
   }
 }
 
-// funções auxiliares
+// helpers
 function addFault(arr) {
   const index = arr.findIndex(f => !f);
   if (index !== -1) arr[index] = true;
@@ -113,7 +140,7 @@ function removeFault(arr) {
   }
 }
 
-// cronômetro
+// timer
 setInterval(() => {
   if (matchState.running) {
     if (matchState.isCountdown) {

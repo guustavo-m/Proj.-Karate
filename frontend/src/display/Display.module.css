@@ -5,6 +5,7 @@
   background: black;
   color: white;
   font-family: Arial, sans-serif;
+  margin: 0;
 }
 
 /* topo */
@@ -111,4 +112,12 @@
   padding: 10px 20px;
   font-size: 18px;
   background: #111;
+}
+
+.senshu {
+    background-color: rgb(10, 187, 10);
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-top: 20px;
 }
